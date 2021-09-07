@@ -7,13 +7,7 @@ export type SetDocument = Set & mongoose.Document;
 @Schema()
 export class Set {
   @Prop({ required: true })
-  sort: string;
-
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
-  user: User;
-
-  @Prop({ required: true })
-  level: number;
+  level: string;
 
   @Prop({ required: true })
   ask: string;
