@@ -2,58 +2,35 @@ import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Set, SetDocument } from './sets.schema';
+import { CreateSetDto } from 'src/dto/create-set.dto';
 
 @Injectable()
 export class SetsService {
   constructor(@InjectModel(Set.name) private setModel: Model<SetDocument>) {}
-  // 첫 생성하기
+  // 첫 생성하기: level은 뭐냐 그거지 params로 받아오고, userid는 body에서 받아오고,
+  // title은 form에서 가져오고, answer만 가져오면 됨.
   async create(createSetDto: CreateSetDto): Promise<Set> {
     const createdSet = new this.setModel(createSetDto);
     return createdSet.save();
   }
 
-  //두 번째부터 
-  async createAndUpdate()
-  // 포스트 업데이트하기
-
-  async update(createSetDto: CreateSetDto): Promise<Set>{
-    const insertedSet =this.setModel.findOne( {userId: createSetDto.userId})
-    .insertOne({
-      'forms.array':{level: createSetDto.forms.level}
-    })
-
-    )
-    return insertedSet
-  }
-    userId: string,
-    level: string,
-    answer: string,
-  ): Promise<boolean> {
+  //user이름과 업데이트할 level, answr들어오면 업데이트하기
+  async update(username: string, level: string, answer: string): Promise<Set> {
     const updatedSet = this.setModel.findOneAndUpdate(
-      { userId: userId, 'forms.array.level': level },
+      { username: username, level: level },
       {
         $set: {
-          'forms.array.answer': answer,
+          answer: answer,
         },
       },
     );
-    if (updatedSet) {
-      return true;
-    }
-    return false;
+    return updatedSet;
   }
 
-  async findAll(): Promise<Set[]> {
-    return this.setModel.find().exec();
+  //user이름이 들어오면 level, title, answer 업데이트하기
+
+  async returnHistory(username: string): Promise<Set[]> {
+    const historySet = this.setModel.find({ username: username }).exec();
+    return historySet;
   }
-}
-
-import { IsObject, IsString } from 'class-validator';
-
-export class CreateSetDto {
-  @IsString()
-  readonly userId: string;
-
-  @IsObject()
-  readonly forms: { level: string; ask: string; answer: string };
 }

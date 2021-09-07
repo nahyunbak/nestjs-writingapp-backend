@@ -21,4 +21,4 @@ export class User {
   interest: string[];
 }
 
-export const UserSchema = SchemaFactory.createForClass(User);
+export const UsersSchema = SchemaFactory.createForClass(User);

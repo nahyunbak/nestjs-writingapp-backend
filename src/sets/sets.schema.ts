@@ -6,10 +6,16 @@ export type SetDocument = Set & mongoose.Document;
 @Schema()
 export class Set {
   @Prop({ required: true })
-  userId: string;
+  username: string;
 
   @Prop({ required: true })
-  forms: [level: string, ask: string, answer: string];
+  level: string;
+
+  @Prop({ required: true })
+  question: string;
+
+  @Prop({ required: true })
+  answer: string;
 }
 
 export const SetsSchema = SchemaFactory.createForClass(Set);
