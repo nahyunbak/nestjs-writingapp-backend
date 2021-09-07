@@ -1,12 +1,9 @@
-import { IsString, IsNumber } from 'class-validator';
+import { IsObject, IsString } from 'class-validator';
 
 export class CreateSetDto {
-  @IsNumber()
-  readonly level: string;
-
   @IsString()
-  readonly ask: string;
+  readonly userId: string;
 
-  @IsString()
-  readonly answer: string;
+  @IsObject()
+  readonly forms: { level: string; ask: string; answer: string };
 }
