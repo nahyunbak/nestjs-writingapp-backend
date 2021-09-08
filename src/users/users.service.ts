@@ -1,39 +1,49 @@
 import { Model } from 'mongoose';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
 
 // This should be a real class/interface representing a user entity
 import { InjectModel } from '@nestjs/mongoose';
 
 import { User, UserDocument } from './user.schema';
 import { CreateUserDto } from 'src/dto/create-user.dto';
+import { CreateUserResultDto } from 'src/dto/create-user-result.dto';
 
 @Injectable()
 export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
   //user 데이터 생성 로직 >> auth 회원가입 서비스 로직
-  async create(createUserDto: CreateUserDto): Promise<User> {
+  async create(
+    createUserDto: CreateUserDto,
+  ): Promise<CreateUserResultDto | HttpException> {
+    const searchResult = this.userModel.findOne({
+      username: createUserDto.username,
+    });
+    if (searchResult) {
+      throw new BadRequestException();
+    }
     const createdUser = new this.userModel(createUserDto);
-    return createdUser.save();
+    createdUser.save();
+    const createUserResult = {
+      user: createdUser,
+      statuscode: 200,
+      message: 'Success to sign up',
+    };
+
+    return createUserResult;
   }
   //user 데이터 삭제 로직 >> auth 회원 탈퇴 로직
-  async deleteUser(username: string, password: string): Promise<boolean> {
-    const gonnaDeletedUser = this.userModel
-      .findOne({ username: username, password: password })
+  async deleteUser(createUserDto: CreateUserDto) {
+    this.userModel
+      .findOneAndDelete({
+        username: createUserDto.username,
+        password: createUserDto.password,
+      })
       .exec();
-    return false;
-    if (gonnaDeletedUser) {
-      this.userModel
-        .deleteOne({ username: username, password: password })
-        .exec();
-      return true;
-    }
   }
 
   //로그인 서비스 로직
-  async findOne(username: string, password: string): Promise<User | undefined> {
-    return this.userModel
-      .findOne({ username: username, password: password })
-      .exec();
+  async findOne(username: string): Promise<User | undefined> {
+    return this.userModel.findOne({ username: username }).exec();
   }
 }
 
