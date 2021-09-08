@@ -2,7 +2,7 @@ import { IsString } from 'class-validator';
 
 export class CreateSetDto {
   @IsString()
-  readonly userId: string;
+  readonly username: string;
 
   @IsString()
   readonly level: string;
