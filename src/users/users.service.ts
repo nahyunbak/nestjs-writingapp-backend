@@ -13,7 +13,8 @@ export class UsersService {
   //user 데이터 생성 로직 >> auth 회원가입 서비스 로직
   async create(createUserDto: CreateUserDto): Promise<CreateUserDto> {
     const createdUser = new this.userModel(createUserDto);
-    return createdUser.save();
+    createdUser.save();
+    return createdUser;
   }
   //user 데이터 삭제 로직 >> auth 회원 탈퇴 로직
   async deleteUser(createUserDto: CreateUserDto) {

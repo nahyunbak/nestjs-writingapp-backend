@@ -14,14 +14,18 @@ import { CreateUserDto } from './dto/create-user.dto';
 @Controller()
 export class AppController {
   constructor(private authService: AuthService) {}
-  /*
 
-  @UseGuards(LocalAuthGuard)
-  @Post('auth/signin')
+  @Post('auth/signup')
   async createAccount(@Body() body: CreateUserDto) {
-    return this.authService.createAcount(body);
+    const user = this.authService.createAcount(body);
+    const access_token = this.authService.login(user);
+    const result = {
+      token: access_token,
+      statusCode: 200,
+      message: 'Success to signup',
+    };
+    return result;
   }
-  */
 
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
@@ -34,33 +38,14 @@ export class AppController {
   getProfile(@Request() req) {
     return req.user;
   }
+  // jwtservice를 이용해 토큰을 decode 해봄. 근데 사실상 필요 없었음 왜냐면 위에서 auth 등으로 저장해놨기 때문에..
+  // 그러니까 굳이 토큰에서 username을 뽑아낼 필요는 없는..?
+
+  @Get('realprofile')
+  getRealProfile(@Body() body) {
+    if (this.authService.checkUser(body.user)) {
+      return this.authService.checkUser(body.user);
+    }
+    return 0;
+  }
 }
-
-/**
- * 
- * port { IsArray, IsOptional, IsString } from 'class-validator';
-
-export class CreateUserDto {
-  @IsString()
-  readonly name: string;
-
-  @IsString()
-  readonly username: string;
-
-  @IsString()
-  readonly password: string;
-
-  @IsOptional()
-  @IsArray()
-  readonly status: string[];
-
-  @IsOptional()
-  @IsArray()
-  readonly interest: string[];
-}
-
- */
-
-/*
-
-*/
