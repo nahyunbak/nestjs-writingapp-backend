@@ -4,6 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from 'src/dto/create-user.dto';
 import { User } from 'src/users/user.schema';
 import { jwtConstants } from './constants';
+import { CreateLoginDto } from 'src/dto/create-login.dto';
 
 @Injectable()
 export class AuthService {
@@ -32,14 +33,14 @@ export class AuthService {
   //verify<T extends object = any>(token: string, options?: JwtVerifyOptions): T;
   async checkUser(token: string): Promise<string> {
     const secretKey = jwtConstants.secret;
-    const decoded = this.jwtService.verify(token, { publicKey: secretKey });
+    const decoded = this.jwtService.verify(token);
     return decoded;
   }
-
+  //username이 제대로 안들어왔잖아.
   async login(user: any) {
     const secretKey = jwtConstants.secret;
-    const payload = { username: user.username, sub: user.userId };
-    const access_token = this.jwtService.sign(payload);
+    const payload = { username: user.username };
+    const access_token = this.jwtService.sign(payload, { secret: '안녕' });
     return { access_token };
   }
 }

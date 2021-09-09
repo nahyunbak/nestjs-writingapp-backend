@@ -3,6 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
+import { FormsModule } from './forms/forms.module';
 import { SetsModule } from './sets/sets.module';
 import { UsersModule } from './users/users.module';
 
@@ -12,6 +13,7 @@ import { UsersModule } from './users/users.module';
     AuthModule,
     UsersModule,
     SetsModule,
+    FormsModule,
     MongooseModule.forRootAsync({
       useFactory: () => ({
         uri: 'mongodb+srv://nahyunbak:skgus933@cluster0.gfybg.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
