@@ -2,9 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from 'src/dto/create-user.dto';
-import { User } from 'src/users/user.schema';
 import { jwtConstants } from './constants';
-import { CreateLoginDto } from 'src/dto/create-login.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -13,122 +12,58 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  //sign in
-
-  async createAcount(createUserDto: CreateUserDto): Promise<User> {
-    const createdAccount = this.usersService.create(createUserDto);
-    return createdAccount;
+  async createAcount(createUserDto: CreateUserDto) {
+    const password = createUserDto.password;
+    const saltOrRounds = 10;
+    const hash = await bcrypt.hash(password, saltOrRounds);
+    const result = {
+      name: createUserDto.name,
+      username: createUserDto.username,
+      password: hash,
+    };
+    const createdUser = this.usersService.createUser(result);
+    return createdUser;
   }
 
   //login
-
+  /*
   async validateUser(username: string, pass: string): Promise<any> {
     const user = await this.usersService.findOne(username);
-    if (user && user.password === pass) {
+    const isMatch = await bcrypt.compare(pass, user.password);
+    if (user && isMatch) {
       const { password, ...result } = user;
       return result;
     }
     return null;
   }
+  */
+  //통과- 유저만 있을 경우 유저를 리턴, 패스워드도 같을 경우 패스워드까지 리턴
+  async validateUser(username: string, pass: string): Promise<any> {
+    const user = await this.usersService.findOne(username);
+    if (user) {
+      const isMatch = await bcrypt.compare(pass, user.password);
+      const { name, username } = user;
+      if (isMatch) {
+        return { name: name, username: username, password: pass };
+      }
+      return { name: name, username: username };
+    }
+    return null;
+  }
+
   //verify<T extends object = any>(token: string, options?: JwtVerifyOptions): T;
-  async checkUser(token: string): Promise<string> {
-    const secretKey = jwtConstants.secret;
-    const decoded = this.jwtService.verify(token);
-    return decoded;
+  async getUsername(token: string): Promise<any> {
+    const decoded = await this.jwtService.verify(token, {
+      secret: process.env.SECRET_KEY,
+    });
+    return decoded.username;
   }
   //username이 제대로 안들어왔잖아.
   async login(user: any) {
-    const secretKey = jwtConstants.secret;
-    const payload = { username: user.username };
-    const access_token = this.jwtService.sign(payload, { secret: '안녕' });
-    return { access_token };
+    const payload = await { username: user.username };
+    const access_token = this.jwtService.sign(payload, {
+      secret: process.env.SECRET_KEY,
+    });
+    return access_token;
   }
 }
-
-/*
-@Injectable()
-export class UsersService {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
-  //user 데이터 생성 로직 >> auth 회원가입 서비스 로직
-  async create(createUserDto: CreateUserDto): Promise<User> {
-    const createdUser = new this.userModel(createUserDto);
-    return createdUser.save();
-  }
-  //user 데이터 삭제 로직 >> auth 회원 탈퇴 로직
-  async deleteUser(createUserDto: CreateUserDto) {
-    this.userModel
-      .findOneAndDelete({
-        username: createUserDto.username,
-        password: createUserDto.password,
-      })
-      .exec();
-  }
-
-  //로그인 서비스 로직
-  async findOne(username: string, password: string): Promise<User | undefined> {
-    return this.userModel
-      .findOne({ username: username, password: password })
-      .exec();
-  }
-}
-
-*/
-
-/*
-import { Injectable } from '@nestjs/common';
-import { UsersService } from '../users/users.service';
-import { JwtService } from '@nestjs/jwt';
-
-@Injectable()
-export class AuthService {
-  constructor(
-    private usersService: UsersService,
-    private jwtService: JwtService,
-  ) {}
-
-  async validateUser(username: string, pass: string): Promise<any> {
-    const user = await this.usersService.findOne(username);
-    if (user && user.password === pass) {
-      const { password, ...result } = user;
-      return result;
-    }
-    return null;
-  }
-
-  async login(user: any) {
-    const payload = { username: user.username, sub: user.userId };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
-  }
-}
-
-*/
-/**
- * import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-
-import * as mongoose from 'mongoose';
-export type UserDocument = User & mongoose.Document;
-
-@Schema()
-export class User {
-  @Prop({ required: true })
-  name: string;
-
-  @Prop({ required: true })
-  username: string;
-
-  @Prop({ required: true })
-  password: string;
-
-  @Prop()
-  goal: string[];
-
-  @Prop()
-  interest: string[];
-}
-
-export const UsersSchema = SchemaFactory.createForClass(User);
-
- * 
- */

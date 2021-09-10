@@ -5,10 +5,10 @@ export class CreateSetDto {
   readonly username: string;
 
   @IsString()
-  readonly level: string;
+  readonly formId: string;
 
   @IsString()
-  readonly question: string;
+  readonly title: string;
 
   @IsString()
   readonly answer: string;

@@ -9,10 +9,10 @@ export class Set {
   username: string;
 
   @Prop({ required: true })
-  level: string;
+  formId: string;
 
   @Prop({ required: true })
-  question: string;
+  title: string;
 
   @Prop({ required: true })
   answer: string;

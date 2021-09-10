@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export class CreateUserDto {
   @IsString()
@@ -9,4 +9,16 @@ export class CreateUserDto {
 
   @IsString()
   readonly password: string;
+
+  @IsOptional()
+  @IsString({ each: true })
+  readonly interest?: string[];
+
+  @IsOptional()
+  @IsString({ each: true })
+  readonly status?: string[];
+
+  @IsOptional()
+  @IsString({ each: true })
+  readonly progress?: string[];
 }

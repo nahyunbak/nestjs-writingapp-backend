@@ -15,9 +15,9 @@ export class SetsService {
   }
 
   //user이름과 업데이트할 level, answr들어오면 업데이트하기
-  async update(username: string, level: string, answer: string): Promise<Set> {
+  async update(username: string, formId: string, answer: string): Promise<Set> {
     const updatedSet = this.setModel.findOneAndUpdate(
-      { username: username, level: level },
+      { username: username, formId: formId },
       {
         $set: {
           answer: answer,
@@ -26,11 +26,25 @@ export class SetsService {
     );
     return updatedSet;
   }
+  async deleteSetByUsername(username: string) {
+    const deletedUser = await this.setModel
+      .deleteMany({
+        username: username,
+      })
+      .exec();
 
-  //user이름이 들어오면 level, title, answer 업데이트하기
-
-  async returnHistory(username: string): Promise<Set[]> {
-    const historySet = this.setModel.find({ username: username }).exec();
-    return historySet;
+    if (deletedUser) {
+      const failure = {
+        statuscode: 404,
+        message: 'Failed to delete account',
+      };
+    }
+    const success = {
+      statuscode: 200,
+      message: 'success to delete account',
+    };
+    return success;
   }
 }
+
+//user이름이 들어오면 level, title, answer 업데이트하기

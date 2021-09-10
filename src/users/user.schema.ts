@@ -12,6 +12,15 @@ export class User {
 
   @Prop({ required: true })
   password: string;
+
+  @Prop()
+  interest: string[];
+
+  @Prop()
+  status: string[];
+
+  @Prop()
+  progress: string[];
 }
 
 export const UsersSchema = SchemaFactory.createForClass(User);

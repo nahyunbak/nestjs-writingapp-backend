@@ -16,7 +16,8 @@ export class FormsService {
   }
 
   async getFormInfo(formId: string): Promise<Form> {
-    const formInfo = this.formModel.findOne({ formId: formId }).exec();
-    return formInfo;
+    const formInfo = this.formModel.findOne({ formId: formId });
+
+    return formInfo.exec();
   }
 }
