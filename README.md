@@ -6,15 +6,13 @@
 <br>
 ✅ 공식 홈페이지를 참고하여 개발 (클론코딩x) 
 <br>
-✅ 데코레이터 디자인 패턴 사용
-<br>
 ✅ 데이터베이스: 몽고DB 사용 
 <br>
 ✅ 무중단 배포 : Aws ec2와 pm2 사용 
 
 
 # API 명세 
-✅ 요청 URL : http://ec2-18-221-71-80.us-east-2.compute.amazonaws.com:3000/
+✅ 메인 URL : http://ec2-18-221-71-80.us-east-2.compute.amazonaws.com:3000/
 <br/>
 ✅ 출력 포맷 : json 
 <table>
