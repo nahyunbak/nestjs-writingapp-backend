@@ -16,6 +16,19 @@
 # API 구조 
 ✅기본 도메인 : http://ec2-18-221-71-80.us-east-2.compute.amazonaws.com:3000/
 
+<table>
+    <thead>
+        <tr>
+            <th colspan="2">The table header</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>The table body</td>
+            <td>with two columns</td>
+        </tr>
+    </tbody>
+</table>
 
 
 # 9.13 진행상황
