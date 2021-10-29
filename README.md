@@ -18,7 +18,6 @@
 <br/>
 ✅ 출력 포맷 : json 
 
-
 <table>
 <thead>
   <tr>
@@ -31,11 +30,17 @@
 </thead>
 <tbody>
   <tr>
-    <td>POST</td>
-    <td>/create/level</td>
-    <td>각 문제 세트를 생성한다 </td>
-    <td>{ <br>&nbsp;&nbsp;"formId": string, <br>&nbsp;&nbsp;"level": string, <br>&nbsp;&nbsp;"title" : string, <br>&nbsp;&nbsp;"contents" : string<br>}</td>
-    <td colspan="3">{ <br>  "formId": string, <br>  "level": string, <br>  "title" : string, <br>  "contents" : string<br>}</td>
+    <td rowspan="2">POST</td>
+    <td rowspan="2">/create/level</td>
+    <td rowspan="2">각 문제 세트를 생성한다 </td>
+    <td rowspan="2">{ <br>&nbsp;&nbsp;"formId": string, <br>&nbsp;&nbsp;"level": string, <br>&nbsp;&nbsp;"title" : string, <br>&nbsp;&nbsp;"contents" : string<br>}</td>
+    <td rowspan="2">{ <br>  "formId": string, <br>  "level": string, <br>  "title" : string, <br>  "contents" : string<br>}</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
   </tr>
   <tr>
     <td>POST</td>
@@ -66,18 +71,29 @@
     <td colspan="3">유저이름</td>
   </tr>
   <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td colspan="3"></td>
+    <td>POST</td>
+    <td>/auth/userdetail/status</td>
+    <td>유저의 직업을 저장시켜준다 </td>
+    <td>{ <br>  "username": string, <br>  "status": string <br>}</td>
+    <td colspan="3">-</td>
   </tr>
   <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td colspan="3"></td>
+    <td>POST</td>
+    <td>/auth/userdetail/progress</td>
+    <td>유저의 진행상황을 저장시켜준다. </td>
+    <td>{ <br>  "username": string, <br>  "progress": string <br>}</td>
+    <td colspan="3">-</td>
+  </tr>
+  <tr>
+    <td rowspan="3">POST</td>
+    <td rowspan="3">/auth/userdetail/interest</td>
+    <td rowspan="3">유저의 관심사를 저장시켜준다. </td>
+    <td rowspan="3">{ <br>  "username": string, <br>  "interest": string <br>}</td>
+    <td colspan="3" rowspan="3">-</td>
+  </tr>
+  <tr>
+  </tr>
+  <tr>
   </tr>
 </tbody>
 </table>
@@ -95,8 +111,6 @@
 # TodoList 
 ⬜️ 보안 관련 미들웨어 적용하기 
 <br>
-⬜️ 유닉테스트, E2E 테스트
+⬜️ 유닛테스트, E2E 테스트
 <br>
-⬜️ 필요한 API 추가하기  
-
-
+⬜️ JWT header 공부하기 
