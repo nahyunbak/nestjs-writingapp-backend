@@ -17,7 +17,6 @@
 ✅ 요청 URL : http://ec2-18-221-71-80.us-east-2.compute.amazonaws.com:3000/
 <br/>
 ✅ 출력 포맷 : json 
-
 <table>
 <thead>
   <tr>
@@ -34,13 +33,9 @@
     <td rowspan="2">/create/level</td>
     <td rowspan="2">각 문제 세트를 생성한다 </td>
     <td rowspan="2">{ <br>&nbsp;&nbsp;"formId": string, <br>&nbsp;&nbsp;"level": string, <br>&nbsp;&nbsp;"title" : string, <br>&nbsp;&nbsp;"contents" : string<br>}</td>
-    <td rowspan="2">{ <br>  "formId": string, <br>  "level": string, <br>  "title" : string, <br>  "contents" : string<br>}</td>
-    <td></td>
-    <td></td>
+    <td colspan="3" rowspan="2">{ <br>  "formId": string, <br>  "level": string, <br>  "title" : string, <br>  "contents" : string<br>}</td>
   </tr>
   <tr>
-    <td></td>
-    <td></td>
   </tr>
   <tr>
     <td>POST</td>
